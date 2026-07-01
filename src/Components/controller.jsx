@@ -1,23 +1,41 @@
-import { useState } from 'react';
+import '../Styles/styles.css';
+import { useState, useEffect } from 'react';
 import Cards from './cards.jsx';
 import { ScoreBoard, IncreaseScore, SetBestScore } from './score.jsx';
 import FetchData from './data-fetch.jsx';
+import Randomizer from './shuffle.jsx';
 
 function Controller () {
 	const [score, setScore] = useState({currentScore: 0, bestScore: 0});
 	const [cards, setCards] = useState([]);
-	const [isClicked, setIsClicked] = useState(false);
+	const [defaultCards, setDefaultCards] = useState([]);
+	
+	useEffect(() => {
+		FetchData(setCards, setDefaultCards);   
+	}, [])
 
-	FetchData(setCards);
+	const ResetCards = () => {
+		setScore(prev => ({...prev, currentScore: 0}));
+		setCards(defaultCards)
+	}
 
 	return (
-		<div className="entire-page">
+		<div className="entirePage">
+			<h2 className="title">Memory Card Game</h2>
+			<p className="rule">Do not click the same card twice!</p>
 			<ScoreBoard score={score} />
-			<div className="card-container">
+			<div className="cardContainer">
 				{cards.map((data, index) => (
-					<Cards key={`card-${index}`} image={data.image} name={data.name}/>
+					<Cards key={data.id} data={data} cards={cards} setCards={setCards} 
+						score={score} setScore={setScore} reset={ResetCards}/>
 				))}
 			</div>
+			<footer>
+				<a href="https://github.com/Yidnekachew-SK/Memory-Card-Game">
+					<p>Yidnekachew-SK</p>
+					<img src="./src/assets/github.svg"></img>
+				</a>
+			</footer>
 		</div>
 	)
 }

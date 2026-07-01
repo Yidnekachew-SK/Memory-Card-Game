@@ -1,4 +1,4 @@
-async function FetchData (setData) {
+async function FetchData (setData, setDefault) {
 	let limit = 12;
 	try {
 		const response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=30&limit=${limit}`);
@@ -12,12 +12,14 @@ async function FetchData (setData) {
 		    	return {
 		    		name: details.name,
 		    		image: details.sprites.other['official-artwork'].front_default,
-		    		isClicked: false
+		    		isClicked: false,
+		    		id: crypto.randomUUID()
 		    	};
 		   	})
 		);
 
-		setData(pokemons);
+		setData(pokemons.map(p => ({ ...p })));
+		setDefault(pokemons.map(p => ({ ...p })));
 
 	} catch (error) {
 		console.log(error);

@@ -1,19 +1,20 @@
+import '../Styles/styles.css';
 function ScoreBoard ({score}) {
 	return (
-		<div>
-			<p>`Score: ${score.currentScore}`</p>
-			<p>`Best Score: ${score.bestScore}`</p>
+		<div className="scoreContainer">
+			<p className="scores currentScore">{`Score: ${score.currentScore}`}</p>
+			<p className="scores bestScore">{`Best Score: ${score.bestScore}`}</p>
 		</div>
 	)
 }
 
-function IncreaseScore (score, setScore) {
-	setScore(prev => ({...prev, currentScore: score + 1}));
+function IncreaseScore (setScore) {
+	setScore(prev => ({...prev, currentScore: prev.currentScore + 1}));
 }
 
-function SetBestScore (gameScore, scoreData, setScore) {
-	if (gameScore > scoreData.bestScore) {
-		SetScore(prev => ({...prev, bestScore: {gameScore}}));
+function SetBestScore (scoreData, setScore) {
+	if (scoreData.currentScore > scoreData.bestScore) {
+		setScore(prev => ({...prev, bestScore: scoreData.currentScore}));
 	}
 }
 
