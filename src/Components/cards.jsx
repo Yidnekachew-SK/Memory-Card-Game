@@ -1,22 +1,17 @@
 import '../Styles/styles.css';
-import { useEffect } from 'react';
 import Randomizer from './shuffle.jsx';
 import { IncreaseScore, SetBestScore } from './score.jsx';
 
-function Cards({data, cards, setCards, score, setScore, reset}) {
+function Cards({data, cards, setCards, score, setScore, reset, checkWin }) {
 
 	const HandleCardClick = (id) => {
 		const card = cards.find(card => card.id === id);
-
-		console.log('id ' + id);
-		console.log(data)
 		
 		if (card.isClicked) {
 			SetBestScore(score, setScore);
-			console.log(score);
 			reset();
 		} else {
-			IncreaseScore(setScore);
+			IncreaseScore(setScore, reset, checkWin);
 			setCards(prev => {
 				const updatedCards = prev.map(card => 
 					card.id === id ?
@@ -26,10 +21,6 @@ function Cards({data, cards, setCards, score, setScore, reset}) {
 			});
 		}
 	}
-	useEffect(() => {
-	  console.log("score updated:", score.currentScore);
-
-	}, [score]);
 
 	return (
 		<div className="cards" onClick={() => HandleCardClick(data.id)}>

@@ -9,6 +9,7 @@ function Controller () {
 	const [score, setScore] = useState({currentScore: 0, bestScore: 0});
 	const [cards, setCards] = useState([]);
 	const [defaultCards, setDefaultCards] = useState([]);
+	const [showWinModal, setShowWinModal] = useState(false);
 	
 	useEffect(() => {
 		FetchData(setCards, setDefaultCards);   
@@ -19,7 +20,20 @@ function Controller () {
 		setCards(defaultCards)
 	}
 
+	const checkWin = (scoreData, setScore) => {
+	   if (scoreData.currentScore === 12) {
+	    setShowWinModal(true);
+	    SetBestScore(scoreData, setScore);
+	    ResetCards();
+	   }
+	};
+
+	const HandleCloseButton = () => {
+		setShowWinModal(false);
+	}
+
 	return (
+		<>
 		<div className="entirePage">
 			<h2 className="title">Memory Card Game</h2>
 			<p className="rule">Do not click the same card twice!</p>
@@ -27,7 +41,7 @@ function Controller () {
 			<div className="cardContainer">
 				{cards.map((data, index) => (
 					<Cards key={data.id} data={data} cards={cards} setCards={setCards} 
-						score={score} setScore={setScore} reset={ResetCards}/>
+						score={score} setScore={setScore} reset={ResetCards} checkWin={checkWin} />
 				))}
 			</div>
 			<footer>
@@ -37,6 +51,16 @@ function Controller () {
 				</a>
 			</footer>
 		</div>
+		
+		{ showWinModal && (
+			<div className="blurSection">
+				<div className="winDisplayer">
+					<p className="description">You have won!</p>
+					<button className="closeButton" onClick={HandleCloseButton}>Close</button>
+				</div>
+			</div>
+		)}
+		</>
 	)
 }
 

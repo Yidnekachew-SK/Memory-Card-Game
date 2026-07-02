@@ -8,8 +8,13 @@ function ScoreBoard ({score}) {
 	)
 }
 
-function IncreaseScore (setScore) {
-	setScore(prev => ({...prev, currentScore: prev.currentScore + 1}));
+function IncreaseScore (setScore, reset, checkWin) {
+	setScore(prev => {
+		const newScoreData = { ...prev, currentScore: prev.currentScore + 1 };
+		checkWin(newScoreData, setScore);
+		
+		return {...prev, currentScore: prev.currentScore + 1}
+	});
 }
 
 function SetBestScore (scoreData, setScore) {
